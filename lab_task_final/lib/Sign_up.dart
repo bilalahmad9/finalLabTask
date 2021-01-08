@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'StylesScreen.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -8,9 +9,7 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
+    return SingleChildScrollView(
         child: Column(
           children: <Widget>[
             ClipPath(
@@ -18,9 +17,12 @@ class _SignUpState extends State<SignUp> {
               child: Container(
                 height: 200,
                 decoration: BoxDecoration(
+                  gradient: LinearGradient(colors: [
+                    Colors.orange,
+                    Colors.deepOrange,
+                  ]),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.orange.withOpacity(0.95),
                       spreadRadius: 3,
                       blurRadius: 8,
                       offset: Offset(0,4),
@@ -29,9 +31,64 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
             ),
+            SizedBox(height: 20,),
+            Container(
+              child: Container(
+                padding: EdgeInsets.symmetric(
+                    horizontal: 35), // giving padding only the left and right side
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    TextField(
+                      style: simpleTextFieldStyle(),
+                      decoration: textfieldInputDecoration("username"),
+                    ),
+                    TextField(
+                      style: simpleTextFieldStyle(),
+                      decoration: textfieldInputDecoration("email"),
+                    ),
+                    TextField(
+                      style: simpleTextFieldStyle(),
+                      decoration: textfieldInputDecoration("password"),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                        child: Text(
+                          "Forgot Password?",
+                          style: simpleTextFieldStyle(),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.symmetric(vertical: 15),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: [
+                          Colors.deepOrange,
+                          Colors.orange,
+                        ]),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Text(
+                        "Sign Up",
+                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 17),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
-      ),
     );
   }
 }
