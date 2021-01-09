@@ -143,7 +143,7 @@ class _signinState extends State<signin> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>  HomeScreen(), fullscreenDialog: true,
+            builder: (context) =>  HomeScreen(),
           ),
         );
       } catch (e) {

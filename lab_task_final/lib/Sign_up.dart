@@ -153,7 +153,7 @@ class _signupState extends State<signup> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>  HomeScreen(), fullscreenDialog: true,
+            builder: (context) =>  HomeScreen(),
           ),
         );
       } catch (e) {
