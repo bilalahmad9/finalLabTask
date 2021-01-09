@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
+import 'Home.dart';
+import 'Sign_in.dart';
 
 class signup extends StatefulWidget {
 
@@ -8,13 +14,8 @@ class signup extends StatefulWidget {
 }
 
 class _signupState extends State<signup> {
-  final GlobalKey<FormState> _formkey = GlobalKey();
-  TextEditingController _passwordController = new TextEditingController();
-
-  Map<String, String> _authData = {
-    'email' : '',
-    'password' : ''
-  };
+  String _email, _password;
+  final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +51,7 @@ class _signupState extends State<signup> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0)),
                 child: Container(
-                  height: 350,
+                  height: 380,
                   width: 300,
                   padding: EdgeInsets.all(15),
                   child: Form(
@@ -58,6 +59,13 @@ class _signupState extends State<signup> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: <Widget>[
+
+                          TextFormField(
+                            decoration: InputDecoration(labelText: 'Enter Name'),
+                            keyboardType: TextInputType.text,
+                            validator: (value) {},
+                          //  onSaved: (value) => _email = value,
+                          ),
                           // For email
                           TextFormField(
                             decoration: InputDecoration(labelText: 'Email'),
@@ -68,52 +76,58 @@ class _signupState extends State<signup> {
                               }
                               return null;
                             },
-                            onSaved: (value) {
-                              _authData['email'] = value;
-                            },
+                            onSaved: (value) => _email = value,
                           ),
                           // for password
                           TextFormField(
                             decoration: InputDecoration(labelText: 'password'),
                             obscureText: true,
-                            controller: _passwordController,
                             validator: (value) {
                               if (value.isEmpty || value.length <= 4) {
                                 return 'please enter more than 4 words';
                               }
                               return null;
                             },
-                            onSaved: (value) {
-                              _authData['password'] = value;
-                            },
+                            onSaved: (value) => _password = value,
                           ),
-                          TextFormField(
-                            decoration: InputDecoration(labelText: 'Confirm Password'),
-                            obscureText: true,
-                            validator: (value) {
-                              if (value.isEmpty || value != _passwordController.text) {
-                                return ' Enter correct password';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                             // _authData['password'] = value;
-                            },
+                          SizedBox(
+                            height: 40,
                           ),
-                          SizedBox(height: 40,),
                           RaisedButton(
+                            onPressed: SignUp,
                             child: Text(
-                              'Sign Up',
+                              'SignUp',
                               style: TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.bold),
                             ),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15),
+                              borderRadius: BorderRadius.circular(10),
                             ),
                             color: Colors.orange,
                             textColor: Colors.white,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          RaisedButton(
                             onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => signin(), fullscreenDialog: true,
+                                ),
+                              );
                             },
+                            child: Text(
+                              'Login Now',
+                              style: TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.bold),
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            color: Colors.orange,
+                            textColor: Colors.white,
                           ),
                         ],
                       ),
@@ -126,6 +140,26 @@ class _signupState extends State<signup> {
         ),
       ),
     );
+  }
+
+  Future<void> SignUp() async {
+    final formState = _formkey.currentState;
+    if (formState.validate()) {
+      formState.save();
+      try {
+        UserCredential user = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: _email, password: _password);
+        user.credential;
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>  HomeScreen(), fullscreenDialog: true,
+          ),
+        );
+      } catch (e) {
+        print(e.message);
+      }
+    }
   }
 }
 
@@ -145,3 +179,4 @@ class ClippingClass extends CustomClipper<Path> {
   @override
   bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+

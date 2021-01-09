@@ -105,7 +105,7 @@ class _signinState extends State<signin> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => signup(),
+                                  builder: (context) => signup(), fullscreenDialog: true,
                                 ),
                               );
                             },
@@ -143,7 +143,7 @@ class _signinState extends State<signin> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>  HomeScreen(),
+            builder: (context) =>  HomeScreen(), fullscreenDialog: true,
           ),
         );
       } catch (e) {
